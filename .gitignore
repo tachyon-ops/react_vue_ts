@@ -1,0 +1,14 @@
+/example/node_modules
+/example/build
+/example/dist
+
+/example_react/node_modules
+/example_react/build
+/example_react/dist
+
+node_modules
+yarn-error.log
+
+lib
+
+*.tgz
