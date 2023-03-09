@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "target": "ES2018",
+    "module": "commonjs",
+    "allowJs": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "tests/**/*.ts",
+    "src/**/*.vue",
+    "tests/**/*.tsx",
+  ],
+  "exclude": [
+    "node_modules",
+  ],
+  "files": [
+    "src/shims-vue.d.ts",
+  ]
+}
