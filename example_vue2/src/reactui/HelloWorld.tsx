@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 
-interface FooProps {
+interface FooProps extends PropsWithChildren {
   foo: string;
 }
 
-const TestA: React.FC = () => <>TestA</>;
+const TestA = () => <>TestA</>;
 const TestB = () => <p>TestB</p>;
 
 function Counter(props: FooProps) {
@@ -12,7 +12,7 @@ function Counter(props: FooProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
+      setSeconds(seconds => seconds + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -24,10 +24,10 @@ export const Test: React.FC<FooProps> = ({ foo, children }) => (
   <div
     style={{
       padding: 10,
-      color: "black",
-      borderColor: "green",
+      color: 'black',
+      borderColor: 'green',
       borderWidth: 10,
-      borderStyle: "solid",
+      borderStyle: 'solid',
     }}
   >
     Hello world from react. Foo: {foo}

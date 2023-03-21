@@ -1,14 +1,17 @@
-import { AsyncComponent, Component } from "vue";
-import ReactWrapper from "../wrappers/React";
+import { AsyncComponent, Component } from 'vue';
 
-export default function VueResolver<T>(component: (props: T) => any) {
+import ReactWrapper from '../wrappers/React';
+
+export default function VueResolver<T>(
+  component: (props: T) => React.ReactElement<T, any> | null
+) {
   return {
     components: { ReactWrapper },
-    props: ["passedProps"],
+    props: ['passedProps'],
     inheritAttrs: false,
     render(createElement: Vue.CreateElement) {
       return createElement(
-        "react-wrapper",
+        `react-wrapper`,
         {
           props: {
             component,
