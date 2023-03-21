@@ -1,6 +1,6 @@
 {
   "name": "vuera-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vuera lib migrated to TS",
   "license": "MIT",
   "main": "./lib/cjs/index.js",
