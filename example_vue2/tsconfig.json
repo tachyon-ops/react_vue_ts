@@ -14,8 +14,8 @@
         ],
         "baseUrl": "./src",
         "paths": {
-            "react/*": [
-                "./react/*"
+            "reactui/*": [
+                "./reactui/*"
             ]
         }
     },

@@ -1,12 +1,14 @@
-import React from "react";
-import Vue from "vue";
-import ReactWrapper from "./React";
-import config from "../config";
+import React from 'react';
+import Vue from 'vue';
 
-const VUE_COMPONENT_NAME = "vuera-internal-component-name";
+import config from '../config';
+
+import ReactWrapper from './React';
+
+const VUE_COMPONENT_NAME = 'vuera-internal-component-name';
 
 const wrapReactChildren = (createElement: any, children: any) =>
-  createElement("vuera-internal-react-wrapper", {
+  createElement('vuera-internal-react-wrapper', {
     props: {
       component: () => <div>{children}</div>,
     },
@@ -37,7 +39,8 @@ export default class VueContainer extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps: any) {
+  componentDidUpdate(nextProps: any) {
+    // console.log('componentDidUpdate', nextProps);
     const { component, ...props } = nextProps;
 
     if ((this as any).currentVueComponent !== component) {
@@ -88,7 +91,7 @@ export default class VueContainer extends React.Component {
       },
       components: {
         [VUE_COMPONENT_NAME]: component,
-        "vuera-internal-react-wrapper": ReactWrapper,
+        'vuera-internal-react-wrapper': ReactWrapper,
       },
     });
   }

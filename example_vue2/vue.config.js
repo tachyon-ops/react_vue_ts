@@ -13,7 +13,7 @@ module.exports = {
       // Add `.ts` and `.tsx` as a resolvable extension.
       extensions: ['.vue', '.ts', '.tsx', '.js', '.css', '.scss'],
       alias: {
-        react: path.resolve(__dirname, 'src/react'),
+        "reactui": path.resolve(__dirname, 'src/reactui'),
       },
     },
     module: {

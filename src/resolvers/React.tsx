@@ -1,7 +1,9 @@
 /* eslint-disable prefer-object-spread/prefer-object-spread */
-import React from "react";
-import VueWrapper from "../wrappers/Vue";
-import isReactComponent from "../utils/isReactComponent";
+import React from 'react';
+import VueWrapperRaw from '../wrappers/Vue';
+import isReactComponent from '../utils/isReactComponent';
+
+const VueWrapper = VueWrapperRaw as unknown as () => JSX.Element;
 
 export default function ReactResolver(component: any) {
   return isReactComponent(component)
