@@ -1,4 +1,5 @@
 import React from "react";
+import * as ReactDOMClient from "react-dom/client";
 import ReactDOM from "react-dom";
 import VueWrapper from "./Vue";
 
@@ -76,25 +77,24 @@ export default {
 
       let NewComp: React.FC;
       // if (!comp.functional) {
-        const Component = makeReactContainer(comp);
-        NewComp = (props: any) => (
-          <Component
-            {...props}
-            ref={(ref: any) => (s.reactComponentRef = ref)}
-          />
-        );
+      const Component = makeReactContainer(comp);
+      NewComp = (props: any) => (
+        <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
+      );
       // } else {
       //   NewComp = (props: any) => <>{comp.render(s.createElement, props)}</>;
       // }
       // NewComp = (props: any) => <>{comp.render(s.createElement, props)}</>;
 
-      ReactDOM.render(
-        <NewComp
-          {...s.$props.passedProps}
-          {...s.$attrs}
-          {...s.$listeners}
-          {...children}
-        />,
+      ReactDOMClient.createRoot(
+        (
+          <NewComp
+            {...s.$props.passedProps}
+            {...s.$attrs}
+            {...s.$listeners}
+            {...children}
+          />
+        ) as unknown as Element | DocumentFragment,
         s.$refs.react
       );
       // console.log("after creating NewComp");
