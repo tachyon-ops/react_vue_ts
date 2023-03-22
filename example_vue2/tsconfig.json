@@ -1,28 +1,41 @@
 {
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "strict": true,
-        "plugins": [
-            {
-                "name": "typescript-plugin-css-modules"
-            }
-        ],
-        "baseUrl": "./src",
-        "paths": {
-            "reactui/*": [
-                "./reactui/*"
-            ]
-        }
-    },
-    "include": [
-        "src/**/*"
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "jest"
     ],
-    "exclude": [
-        "node_modules"
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
     ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

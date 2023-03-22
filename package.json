@@ -12,18 +12,21 @@
         "build": "tsc"
     },
     "peerDependencies": {
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "react": "18",
-        "react-dom": "18",
+        "react": ">=18",
+        "react-dom": ">=18",
         "vue": ">= 2.5"
     },
     "devDependencies": {
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/uuid": "^9.0.1",
+        "@typescript-eslint/eslint-plugin": "^5.56.0",
+        "@typescript-eslint/parser": "^5.56.0",
         "typescript": "^5.0.2",
         "uuid": "^9.0.0",
         "vue": "2.5"
+    },
+    "dependencies": {
+        "eslint": "^8.36.0"
     }
 }
