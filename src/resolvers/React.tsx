@@ -1,6 +1,5 @@
-/* eslint-disable prefer-object-spread/prefer-object-spread */
 import React from 'react';
-import VueWrapperRaw from '../wrappers/Vue';
+import VueWrapperRaw from '../wrappers/VueWrapper';
 import isReactComponent from '../utils/isReactComponent';
 
 const VueWrapper = VueWrapperRaw as unknown as () => JSX.Element;

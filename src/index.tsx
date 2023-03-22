@@ -1,5 +1,5 @@
-import ReactWrapper from "./wrappers/React";
-import VueWrapper from "./wrappers/Vue";
+import ReactWrapper from "./wrappers/ReactWrapper";
+import VueWrapper from "./wrappers/VueWrapper";
 import VuePlugin from "./VuePlugin";
 import VueInReact, {
   babelReactResolver as __vueraReactResolver,

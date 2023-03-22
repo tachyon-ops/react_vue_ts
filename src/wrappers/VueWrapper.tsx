@@ -1,9 +1,7 @@
 import React from 'react';
 import Vue from 'vue';
-
+import ReactWrapper from './ReactWrapper';
 import config from '../config';
-
-import ReactWrapper from './React';
 
 const VUE_COMPONENT_NAME = 'vuera-internal-component-name';
 
@@ -39,8 +37,7 @@ export default class VueContainer extends React.Component {
     };
   }
 
-  componentDidUpdate(nextProps: any) {
-    // console.log('componentDidUpdate', nextProps);
+  componentWillReceiveProps(nextProps: any) {
     const { component, ...props } = nextProps;
 
     if ((this as any).currentVueComponent !== component) {

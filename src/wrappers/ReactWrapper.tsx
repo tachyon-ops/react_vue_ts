@@ -1,31 +1,13 @@
 import React from 'react';
 import { Root, createRoot } from 'react-dom/client';
-import VueWrapper from './Vue';
+import VueWrapper from './VueWrapper';
 import { v4 } from 'uuid';
-
-const VueWrapperRender = VueWrapper as unknown as (props: {
-  component: any;
-}) => JSX.Element;
-
-const wrapVueChildren = (children: any) => {
-  // console.log('wrapVueChildren: ', children);
-  if (children) {
-    return {
-      render: (createElement: any) => createElement('div', children),
-    };
-  }
-  return null;
-};
 
 const makeReactContainer = (Component: any) =>
   class ReactInVue extends React.Component {
     static displayName = `ReactInVue${
       Component.displayName || Component.name || 'Component'
     }`;
-
-    static wrappedChildren: {
-      render: (createElement: any) => any;
-    } | null;
 
     constructor(props: any) {
       super(props);
@@ -35,41 +17,46 @@ const makeReactContainer = (Component: any) =>
        * update component's state, which seems better than re-rendering the whole thing with
        * ReactDOM.
        */
-      this.state = { ...props };
+      (this as any).state = { ...props };
     }
 
-    static getDerivedStateFromProps(prevProps: any, nextProps: any) {
-      console.log(
-        'REACT::getDerivedStateFromProps, NEXT: ',
-        nextProps.children[0].children[0],
-        'PREV: ',
-        prevProps.children[0].children[0]
-      );
-      const newChildren = wrapVueChildren(nextProps.children);
-      return {
-        ...nextProps,
-        newChildren,
-      };
+    wrapVueChildren(children: any) {
+      // console.log("wrapVueChildren: ", children);
+      if (children)
+        return {
+          render: (createElement: any) => createElement('div', children),
+        };
+      return null;
     }
 
     render() {
       const {
         children,
-        newChildren,
         // Vue attaches an event handler, but it is missing an event name, so
         // it ends up using an empty string. Prevent passing an empty string
         // named prop to React.
         '': _invoker,
         ...rest
       } = (this as any).state;
+      const wrappedChildren = this.wrapVueChildren(children);
+
+      const VueWrapperRender = VueWrapper as unknown as (props: {
+        component: any;
+      }) => JSX.Element;
+
+      if ('ReactInVueTestAA' === ReactInVue.displayName) {
+        // console.log("THIS IS IT!", Component.render);
+      }
+
+      // console.log("wrappedChildren: ", wrappedChildren);
 
       return (
         <Component {...rest}>
-          {newChildren && <VueWrapperRender component={newChildren} />}
+          {wrappedChildren && <VueWrapperRender component={wrappedChildren} />}
         </Component>
       );
     }
-  };
+  } as unknown as () => JSX.Element;
 
 const RootMap: Map<string, Root> = new Map();
 
@@ -84,18 +71,16 @@ export default {
   methods: {
     mountReactComponent(comp: any) {
       const s = this as any;
-      // console.log('before creating NewComp');
-      // console.log('Name: ', comp.name || comp.displayName);
+      // console.log("before creating NewComp");
+      // console.log("Name: ", comp.name || comp.displayName);
       // console.log(comp);
 
       const children =
         s.$slots.default !== undefined ? { children: s.$slots.default } : {};
 
-      const Component = makeReactContainer(
-        comp
-      ) as unknown as () => JSX.Element;
-
-      let NewComp = (props: any) => (
+      // if (!comp.functional) {
+      const Component = makeReactContainer(comp);
+      const NewComp = (props: any) => (
         <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
       );
 
@@ -113,10 +98,9 @@ export default {
   },
   mounted() {
     (this as any).mountReactComponent((this as any).$props.component);
-    // console.log('RawVuewReactWrapper::mounted');
   },
   beforeDestroy() {
-    //     ReactDOM.unmountComponentAtNode((this as any).$refs.react);
+    // ReactDOM.unmountComponentAtNode((this as any).$refs.react);
     const root = RootMap.get((this as any).uuid);
     if (root) root.unmount();
   },
@@ -125,20 +109,21 @@ export default {
      * AFAIK, this is the only way to update children. It doesn't seem to be possible to watch
      * `$slots` or `$children`.
      */
-    const ref = (this as any).reactComponentRef as React.Component;
-    const vueChildren = (this as any).$slots.default;
-    // console.log('RawVuewReactWrapper::updated', vueChildren);
-    if (vueChildren !== undefined) {
-      ref.setState({ children: vueChildren });
+    if ((this as any).$slots.default !== undefined) {
+      (this as any).reactComponentRef.setState({
+        children: (this as any).$slots.default,
+      });
     } else {
-      ref.setState({ children: null });
+      (this as any).reactComponentRef.setState({ children: null });
     }
   },
   inheritAttrs: false,
   watch: {
     $attrs: {
       handler() {
-        (this as any).reactComponentRef.setState({ ...(this as any).$attrs });
+        (this as any).reactComponentRef.setState({
+          ...(this as any).$attrs,
+        });
       },
       deep: true,
     },
