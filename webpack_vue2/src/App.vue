@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    {{ getName() }}
+    <TestInVue foo="from VUE">
+      <div>A vue children in the middle of a React comp</div>
+    </TestInVue>
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
@@ -11,10 +13,13 @@ import { ReactInVue } from "vuera-ts";
 import HelloWorld from "./components/HelloWorld";
 import { NAME, Test } from "./react_ui";
 
+const TestInVue = ReactInVue(Test);
+
 export default {
   name: "App",
   components: {
     HelloWorld,
+    TestInVue,
   },
   methods: {
     getName() {

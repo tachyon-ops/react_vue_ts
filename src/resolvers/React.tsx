@@ -1,10 +1,10 @@
-import React from 'react';
-import VueWrapperRaw from '../wrappers/VueWrapper';
-import isReactComponent from '../utils/isReactComponent';
+import React from "react";
+import { VueWrapper as VueWrapperRaw } from "../wrappers/VueWrapper";
+import isReactComponent from "../utils/isReactComponent";
 
 const VueWrapper = VueWrapperRaw as unknown as () => JSX.Element;
 
-export default function ReactResolver(component: any) {
+export function VueInReact(component: any) {
   return isReactComponent(component)
     ? component
     : (props: any) => <VueWrapper {...props} component={component} />;

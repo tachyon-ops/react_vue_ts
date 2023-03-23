@@ -1,12 +1,12 @@
-import React from 'react';
-import { Root, createRoot } from 'react-dom/client';
-import VueWrapper from './VueWrapper';
-import { v4 } from 'uuid';
+import React from "react";
+import { Root, createRoot } from "react-dom/client";
+import { VueWrapper } from "./VueWrapper";
+import { v4 } from "uuid";
 
 const makeReactContainer = (Component: any) =>
   class ReactInVue extends React.Component {
     static displayName = `ReactInVue${
-      Component.displayName || Component.name || 'Component'
+      Component.displayName || Component.name || "Component"
     }`;
 
     constructor(props: any) {
@@ -24,7 +24,7 @@ const makeReactContainer = (Component: any) =>
       // console.log("wrapVueChildren: ", children);
       if (children)
         return {
-          render: (createElement: any) => createElement('div', children),
+          render: (createElement: any) => createElement("div", children),
         };
       return null;
     }
@@ -35,7 +35,7 @@ const makeReactContainer = (Component: any) =>
         // Vue attaches an event handler, but it is missing an event name, so
         // it ends up using an empty string. Prevent passing an empty string
         // named prop to React.
-        '': _invoker,
+        "": _invoker,
         ...rest
       } = (this as any).state;
       const wrappedChildren = this.wrapVueChildren(children);
@@ -44,7 +44,7 @@ const makeReactContainer = (Component: any) =>
         component: any;
       }) => JSX.Element;
 
-      if ('ReactInVueTestAA' === ReactInVue.displayName) {
+      if ("ReactInVueTestAA" === ReactInVue.displayName) {
         // console.log("THIS IS IT!", Component.render);
       }
 
@@ -60,13 +60,13 @@ const makeReactContainer = (Component: any) =>
 
 const RootMap: Map<string, Root> = new Map();
 
-export default {
-  name: 'ReactInVueRawVueComp',
-  props: ['component', 'passedProps'],
+export const ReactWrapper = {
+  name: "ReactInVueRawVueComp",
+  props: ["component", "passedProps"],
   render(createElement: any) {
     (this as any).createElement = createElement; // save for later
     (this as any).uuid = v4();
-    return createElement('div', { ref: 'react' });
+    return createElement("div", { ref: "react" });
   },
   methods: {
     mountReactComponent(comp: any) {
@@ -127,7 +127,7 @@ export default {
       },
       deep: true,
     },
-    '$props.component': {
+    "$props.component": {
       handler(newValue: any) {
         (this as any).mountReactComponent(newValue);
       },
@@ -140,7 +140,7 @@ export default {
       },
       deep: true,
     },
-    '$props.passedProps': {
+    "$props.passedProps": {
       handler() {
         (this as any).reactComponentRef.setState({
           ...(this as any).$props.passedProps,

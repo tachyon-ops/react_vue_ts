@@ -6,7 +6,7 @@ import VueResolver from "./resolvers/Vue";
 /**
  * This mixin automatically wraps all React components into Vue.
  */
-export default {
+export const VuePlugin = {
   install(Vue: typeof _Vue, options: any) {
     console.log("Installing Vuera VuePlugin");
     /**

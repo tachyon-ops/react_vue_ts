@@ -92,7 +92,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "..", "public", "index.html"),
       filename: "index.html",
-      BASE_URL: `${process.env.API_URL}`,
+      BASE_URL: `${process.env.API_URL || "/"}`,
     }),
   ],
 };
