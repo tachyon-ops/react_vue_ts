@@ -1,5 +1,6 @@
-build/
-dist/
-node_modules/
-.snapshots/
-*.min.js
+# path/to/project/root/.eslintignore
+# /node_modules/* and /bower_components/* in the project root are ignored by default
+
+# Ignore built files except build/index.js
+dist/*
+#!build/index.js

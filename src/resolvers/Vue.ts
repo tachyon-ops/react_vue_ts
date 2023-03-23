@@ -1,5 +1,5 @@
 import { AsyncComponent, Component } from "vue";
-import ReactWrapper from "../wrappers/React";
+import { ReactWrapper } from "../wrappers/ReactWrapper";
 
 export default function VueResolver<T>(component: (props: T) => any) {
   return {

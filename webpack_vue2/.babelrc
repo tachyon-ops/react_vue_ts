@@ -1,0 +1,16 @@
+{
+    "presets": [
+        // https://babeljs.io/docs/babel-preset-react
+        "@babel/preset-react", // needed for React.Fragments
+        "@babel/preset-typescript", // needed for TypeScript
+        [
+            "@babel/preset-env", // original
+            {
+                "modules": false
+            }
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-syntax-dynamic-import"
+    ]
+}

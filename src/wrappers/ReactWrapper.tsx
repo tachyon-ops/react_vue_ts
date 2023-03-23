@@ -1,6 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import VueWrapper from "./Vue";
+import { Root, createRoot } from "react-dom/client";
+import { VueWrapper } from "./VueWrapper";
+import { v4 } from "uuid";
 
 const makeReactContainer = (Component: any) =>
   class ReactInVue extends React.Component {
@@ -16,7 +17,7 @@ const makeReactContainer = (Component: any) =>
        * update component's state, which seems better than re-rendering the whole thing with
        * ReactDOM.
        */
-      this.state = { ...props };
+      (this as any).state = { ...props };
     }
 
     wrapVueChildren(children: any) {
@@ -55,13 +56,16 @@ const makeReactContainer = (Component: any) =>
         </Component>
       );
     }
-  };
+  } as unknown as () => JSX.Element;
 
-export default {
+const RootMap: Map<string, Root> = new Map();
+
+export const ReactWrapper = {
   name: "ReactInVueRawVueComp",
   props: ["component", "passedProps"],
   render(createElement: any) {
     (this as any).createElement = createElement; // save for later
+    (this as any).uuid = v4();
     return createElement("div", { ref: "react" });
   },
   methods: {
@@ -74,37 +78,31 @@ export default {
       const children =
         s.$slots.default !== undefined ? { children: s.$slots.default } : {};
 
-      let NewComp: React.FC;
       // if (!comp.functional) {
-        const Component = makeReactContainer(comp);
-        NewComp = (props: any) => (
-          <Component
-            {...props}
-            ref={(ref: any) => (s.reactComponentRef = ref)}
-          />
-        );
-      // } else {
-      //   NewComp = (props: any) => <>{comp.render(s.createElement, props)}</>;
-      // }
-      // NewComp = (props: any) => <>{comp.render(s.createElement, props)}</>;
+      const Component = makeReactContainer(comp);
+      const NewComp = (props: any) => (
+        <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
+      );
 
-      ReactDOM.render(
+      const root = createRoot(s.$refs.react);
+      root.render(
         <NewComp
           {...s.$props.passedProps}
           {...s.$attrs}
           {...s.$listeners}
           {...children}
-        />,
-        s.$refs.react
+        />
       );
-      // console.log("after creating NewComp");
+      RootMap.set((this as any).uuid, root);
     },
   },
   mounted() {
     (this as any).mountReactComponent((this as any).$props.component);
   },
   beforeDestroy() {
-    ReactDOM.unmountComponentAtNode((this as any).$refs.react);
+    // ReactDOM.unmountComponentAtNode((this as any).$refs.react);
+    const root = RootMap.get((this as any).uuid);
+    if (root) root.unmount();
   },
   updated() {
     /**
@@ -123,7 +121,9 @@ export default {
   watch: {
     $attrs: {
       handler() {
-        (this as any).reactComponentRef.setState({ ...(this as any).$attrs });
+        (this as any).reactComponentRef.setState({
+          ...(this as any).$attrs,
+        });
       },
       deep: true,
     },

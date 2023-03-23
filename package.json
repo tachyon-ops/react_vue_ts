@@ -1,29 +1,33 @@
 {
-  "name": "vuera-ts",
-  "version": "1.0.0",
-  "description": "Vuera lib migrated to TS",
-  "license": "MIT",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
-  "files": [
-    "/lib"
-  ],
-  "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch"
-  },
-  "peerDependencies": {
-    "@types/react": "^16",
-    "@types/react-dom": "^16",
-    "react": "16",
-    "react-dom": "16",
-    "vue": ">= 2.2"
-  },
-  "devDependencies": {
-    "@typescript-eslint/parser": "^5.12.0",
-    "microbundle": "^0.14.2",
-    "typescript": "^4.5.5",
-    "vue": "2.5"
-  }
+    "name": "vuera-ts",
+    "version": "1.0.3-rc02",
+    "description": "Vuera lib migrated to TS",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist"
+    ],
+    "scripts": {
+        "build": "tsc"
+    },
+    "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18",
+        "vue": ">= 2.5"
+    },
+    "devDependencies": {
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@types/uuid": "^9.0.1",
+        "@typescript-eslint/eslint-plugin": "^5.56.0",
+        "@typescript-eslint/parser": "^5.56.0",
+        "typescript": "^5.0.2",
+        "uuid": "^9.0.0",
+        "vue": "2.5",
+        "webpack": "^5.76.3"
+    },
+    "dependencies": {
+        "eslint": "^8.36.0"
+    }
 }
