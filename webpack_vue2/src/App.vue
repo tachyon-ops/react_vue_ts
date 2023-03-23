@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import { NAME } from "./react_ui/index";
+import HelloWorld from "./components/HelloWorld";
+import { NAME } from "./react_ui";
 
 export default {
   name: "App",

@@ -24,7 +24,8 @@
         "@typescript-eslint/parser": "^5.56.0",
         "typescript": "^5.0.2",
         "uuid": "^9.0.0",
-        "vue": "2.5"
+        "vue": "2.5",
+        "webpack": "^5.76.3"
     },
     "dependencies": {
         "eslint": "^8.36.0"
