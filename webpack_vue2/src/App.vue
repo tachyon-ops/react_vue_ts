@@ -7,8 +7,9 @@
 </template>
 
 <script>
+import { ReactInVue } from "vuera-ts";
 import HelloWorld from "./components/HelloWorld";
-import { NAME } from "./react_ui";
+import { NAME, Test } from "./react_ui";
 
 export default {
   name: "App",

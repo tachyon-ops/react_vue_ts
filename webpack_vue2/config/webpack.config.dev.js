@@ -23,6 +23,7 @@ module.exports = {
         use: "vue-loader",
         exclude: /node_modules/,
       },
+
       //use babel-loader to transpile js files
       {
         test: /\.js$/,
@@ -30,6 +31,22 @@ module.exports = {
         exclude: /node_modules/,
       },
 
+      {
+        test: /\.(jsx|tsx)?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.ts?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        // options: {
+        //   // Tell to ts-loader: if you check .vue file extension, handle it like a ts file (vue3 TS)
+        //   appendTsSuffixTo: [/\.vue$/],
+        // },
+      },
+
+      // CSS
       {
         test: /\.scss$/,
         use: ["style-loader", "css-loader", "sass-loader"],
@@ -39,6 +56,7 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
 
+      // ASSETS
       // https://stackoverflow.com/a/37673142/5954864
       {
         test: /\.(eot|ttf|woff|woff2|jpe?g|png|gif|svg)$/i,
