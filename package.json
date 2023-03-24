@@ -1,6 +1,6 @@
 {
     "name": "vuera-ts",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Vuera lib migrated to TS",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -48,12 +48,12 @@
         "vue": ">= 2.6"
     },
     "devDependencies": {
-        "eslint": "^8.36.0",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/uuid": "^9.0.1",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
+        "eslint": "^8.36.0",
         "typescript": "^5.0.2",
         "uuid": "^9.0.0",
         "vue": "2.5",
