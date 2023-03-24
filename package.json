@@ -2,7 +2,6 @@
     "name": "vuera-ts",
     "version": "1.0.5",
     "description": "Vuera lib migrated to TS",
-    "license": "MIT",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -11,12 +10,45 @@
     "scripts": {
         "build": "tsc"
     },
+    "release": {
+        "branches": [
+            "main"
+        ]
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nmpribeiro/vuera-ts.git"
+    },
+    "keywords": [
+        "npm",
+        "javascript",
+        "typescript",
+        "esm",
+        "cjs",
+        "nodejs",
+        "commonjs",
+        "ecmascript",
+        "react",
+        "vue",
+        "react in vue",
+        "vue in react"
+    ],
+    "author": "nmpribeiro",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/nmpribeiro/vuera-ts/issues"
+    },
+    "homepage": "https://github.com/nmpribeiro/vuera-ts#readme",
     "peerDependencies": {
         "react": ">=18",
         "react-dom": ">=18",
-        "vue": ">= 2.5"
+        "vue": ">= 2.6"
     },
     "devDependencies": {
+        "eslint": "^8.36.0",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/uuid": "^9.0.1",
@@ -27,7 +59,5 @@
         "vue": "2.5",
         "webpack": "^5.76.3"
     },
-    "dependencies": {
-        "eslint": "^8.36.0"
-    }
+    "dependencies": {}
 }
