@@ -8,10 +8,6 @@ import {
 
 import ReactInVue from "./resolvers/Vue";
 
-const SayHello = ({ name }: { name: string }): JSX.Element => (
-  <div>Hey {name}, say hello to TypeScript.</div>
-);
-
 export {
   ReactWrapper,
   VueWrapper,
@@ -19,6 +15,4 @@ export {
   VuePlugin,
   VueInReact,
   ReactInVue,
-  // TEST
-  SayHello,
 };
