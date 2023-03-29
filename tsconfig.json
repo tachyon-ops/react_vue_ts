@@ -1,25 +1,25 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "target": "ESNext",
+        "target": "es5",
+        "module": "commonjs",
         "lib": [
-            "es2017",
-            "DOM",
-            "DOM.Iterable",
-            "ESNext"
+            "ES2015",
+            "ES2017",
+            "DOM"
         ],
         "declaration": true,
+        "sourceMap": true,
         "esModuleInterop": true,
-        "outDir": "./dist",
         "jsx": "react-jsx",
-        "types": []
+        "outDir": "./lib",
+        "strict": true
     },
     "include": [
-        "src/**/*"
+        "src"
     ],
     "exclude": [
         "node_modules",
-        "example_vue2"
+        "webpack_vue2",
+        "**/__tests__/*"
     ]
 }

@@ -28,13 +28,8 @@ export class VueWrapper extends React.Component {
      */
     const createVueInstance = this.createVueInstance;
     const self = this;
-    (this as any).createVueInstance = function (
-      element: any,
-      component: any,
-      prevComponent: any
-    ) {
+    (this as any).createVueInstance = (element: any, component: any, prevComponent: any) =>
       createVueInstance(element, self, component, prevComponent);
-    };
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -63,12 +58,7 @@ export class VueWrapper extends React.Component {
    * @param {HTMLElement} targetElement - element to attact the Vue instance to
    * @param {ReactInstance} reactThisBinding - current instance of VueContainer
    */
-  createVueInstance(
-    targetElement: any,
-    reactThisBinding: any,
-    _component?: any,
-    _prevComponent?: any
-  ) {
+  createVueInstance(targetElement: any, reactThisBinding: any, _component?: any, _prevComponent?: any) {
     const { component, on, ...props } = reactThisBinding.props;
 
     // `this` refers to Vue instance in the constructor
@@ -98,8 +88,7 @@ export class VueWrapper extends React.Component {
     /**
      * Replace the component in the Vue instance and update it.
      */
-    (this as any).vueInstance.$options.components[VUE_COMPONENT_NAME] =
-      nextComponent;
+    (this as any).vueInstance.$options.components[VUE_COMPONENT_NAME] = nextComponent;
     (this as any).vueInstance.$forceUpdate();
   }
 

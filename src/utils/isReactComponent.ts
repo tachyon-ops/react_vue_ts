@@ -8,15 +8,11 @@ export default function isReactComponent(component: any) {
   return !(
     typeof component === "function" &&
     component.prototype &&
-    ((component.prototype.constructor.super &&
-      component.prototype.constructor.super.isVue) ||
+    ((component.prototype.constructor.super && component.prototype.constructor.super.isVue) ||
       component.prototype instanceof Vue)
   );
 }
 
 function isReactForwardReference(component: any) {
-  return (
-    component.$$typeof &&
-    component.$$typeof.toString() === "Symbol(react.forward_ref)"
-  );
+  return component.$$typeof && component.$$typeof.toString() === "Symbol(react.forward_ref)";
 }
