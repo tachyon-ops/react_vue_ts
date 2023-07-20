@@ -20,6 +20,11 @@ export default function VueResolver<T>(component: (props: T) => any) {
         (this as any).$slots.default
       );
     },
+    methods: {
+      reactRef() {
+          return this.$children[0].reactComponentRef.reactRef.current;
+      }
+    },
   } as unknown as
     | Component<any, any, any, T>
     | AsyncComponent<any, any, any, T>;
