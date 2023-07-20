@@ -5,12 +5,20 @@ import { v4 } from "uuid";
 
 const makeReactContainer = (Component: any) =>
   class ReactInVue extends React.Component {
+
+    public reactRef : React.RefObject<unknown>;
+
     static displayName = `ReactInVue${
       Component.displayName || Component.name || "Component"
     }`;
 
     constructor(props: any) {
       super(props);
+
+      /**
+       * Attach internal reference, so calls to child methods are allowed.
+       */
+      this.reactRef = React.createRef();
 
       /**
        * We create a stateful component in order to attach a ref on it. We will use that ref to
@@ -51,7 +59,7 @@ const makeReactContainer = (Component: any) =>
       // console.log("wrappedChildren: ", wrappedChildren);
 
       return (
-        <Component {...rest}>
+        <Component ref={this.reactRef} {...rest}>
           {wrappedChildren && <VueWrapperRender component={wrappedChildren} />}
         </Component>
       );
@@ -116,6 +124,9 @@ export const ReactWrapper = {
     } else {
       (this as any).reactComponentRef.setState({ children: null });
     }
+  },
+  reactRef() : any {
+    return (this as any).reactComponentRef;
   },
   inheritAttrs: false,
   watch: {
