@@ -126,6 +126,8 @@ export const ReactWrapper = {
     }
   },
   reactRef() : any {
+    // TODO: any reference to the inner React component will break the type (user could force it himself)
+    // but there might be a way to make it generic, since we do receive the component as a function argument
     return (this as any).reactComponentRef;
   },
   inheritAttrs: false,
