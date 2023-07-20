@@ -53,3 +53,10 @@ Then you can use `TestCompInVue` in your Vue component. Register it in `Vue.comp
 * [ ] Setup `webpack_vue3` example
 * [ ] Setup `webpack_react` example
 * [ ] Check if Vue in react works (I am not very motivated to do it)
+
+## Contributors
+
+I really enjoy people recognizing others. Therefore, whoever contributes to our project will have a mention here :)
+I am very grateful!
+
+* [Juan Lago @juanparati](https://github.com/juanparati)
