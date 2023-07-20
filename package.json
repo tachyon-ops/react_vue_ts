@@ -1,6 +1,6 @@
 {
     "name": "vuera-ts",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Vuera lib migrated to TS",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
