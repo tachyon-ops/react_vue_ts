@@ -1,12 +1,11 @@
-import { ReactWrapper } from "./wrappers/ReactWrapper";
-import { VueWrapper } from "./wrappers/VueWrapper";
-import { VuePlugin } from "./VuePlugin";
 import {
-  VueInReact,
   babelReactResolver as __vueraReactResolver,
-} from "./resolvers/React";
-
-import ReactInVue from "./resolvers/Vue";
+  VueInReact,
+} from './resolvers/React';
+import { ReactInVue } from './resolvers/Vue';
+import { VuePlugin } from './VuePlugin';
+import { ReactWrapper } from './wrappers/ReactWrapper';
+import { VueWrapper } from './wrappers/VueWrapper';
 
 export {
   ReactWrapper,

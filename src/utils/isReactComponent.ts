@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-export default function isReactComponent(component: any) {
+export function isReactComponent(component: any) {
   if (typeof component === "object" && !isReactForwardReference(component)) {
     return false;
   }

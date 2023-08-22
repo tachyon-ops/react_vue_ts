@@ -1,14 +1,24 @@
-import { AsyncComponent, Component } from "vue";
-import { ReactWrapper } from "../wrappers/ReactWrapper";
+import { defineComponent } from 'vue';
 
-export default function VueResolver<T>(component: (props: T) => any) {
-  return {
+import { ReactWrapper } from '../wrappers/ReactWrapper';
+
+type CompType<T extends {}> = (props: T) => JSX.Element | undefined;
+
+type GlobalComponentConstructor<Props = {}, Slots = {}> = {
+  new (): {
+    $props: Props;
+    $slots: Slots;
+  };
+};
+
+export function ReactInVue<T extends {}>(component: CompType<T>) {
+  return defineComponent({
     components: { ReactWrapper },
-    props: ["passedProps"],
+    props: ['passedProps'],
     inheritAttrs: false,
     render(createElement: Vue.CreateElement) {
       return createElement(
-        "react-wrapper",
+        'react-wrapper',
         {
           props: {
             component,
@@ -21,11 +31,9 @@ export default function VueResolver<T>(component: (props: T) => any) {
       );
     },
     methods: {
-      reactRef() {
-          return this.$children[0].reactComponentRef.reactRef.current;
-      }
+      reactRef(): React.RefObject<CompType<T>> {
+        return (this.$children[0] as any).reactComponentRef.reactRef.current;
+      },
     },
-  } as unknown as
-    | Component<any, any, any, T>
-    | AsyncComponent<any, any, any, T>;
+  }) as unknown as GlobalComponentConstructor<T>;
 }

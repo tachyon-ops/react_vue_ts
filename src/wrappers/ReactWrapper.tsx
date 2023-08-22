@@ -1,13 +1,19 @@
-import React from "react";
-import { createRoot, Root } from "react-dom/client";
-import { v4 } from "uuid";
+import React, { PropsWithChildren } from 'react';
+import { createRoot, Root } from 'react-dom/client';
+import { v4 } from 'uuid';
+import { defineComponent } from 'vue';
 
-import { VueWrapper } from "./VueWrapper";
+import { VueWrapper } from './VueWrapper';
 
-const makeReactContainer = (Component: any) => {
+const makeReactContainer = <
+  P extends PropsWithChildren,
+  T extends { key?: number }
+>(
+  Component: any
+): any => {
   class ReactInVue extends React.Component {
     static displayName = `ReactInVue${
-      Component.displayName || Component.name || "Component"
+      Component.displayName || Component.name || 'Component'
     }`;
 
     constructor(props: any) {
@@ -28,7 +34,7 @@ const makeReactContainer = (Component: any) => {
     wrapVueChildren(children: any) {
       if (children) {
         return {
-          render: (createElement: any) => createElement("div", children),
+          render: (createElement: any) => createElement('div', children),
         };
       }
       return null;
@@ -40,7 +46,7 @@ const makeReactContainer = (Component: any) => {
         // Vue attaches an event handler, but it is missing an event name, so
         // it ends up using an empty string. Prevent passing an empty string
         // named prop to React.
-        "": _invoker,
+        '': _invoker,
         ...rest
       } = (this as any).state;
 
@@ -64,44 +70,61 @@ const makeReactContainer = (Component: any) => {
 
 const RootMap: Map<string, Root> = new Map();
 
-export const ReactWrapper = {
-  name: "ReactInVueRawVueComp",
-  props: ["component", "passedProps"],
+interface ReactState {}
+interface ReactProps extends PropsWithChildren {}
+
+export const ReactWrapper = defineComponent({
+  name: 'ReactInVueRawVueComp',
+  props: ['component', 'passedProps'],
+  data() {
+    return {
+      renderComponent: true,
+      uuid: v4(),
+    } as unknown as {
+      createElement: any;
+      uuid: string;
+      renderComponent: boolean;
+      reactComponentRef: React.Component<ReactProps, ReactState>;
+      root: Root;
+    };
+  },
   render(createElement: any) {
-    (this as any).createElement = createElement; // save for later
-    (this as any).uuid = v4();
-    return createElement("div", { ref: "react" });
+    this.createElement = createElement;
+    return createElement('div', { ref: 'react' });
   },
   methods: {
-    mountReactComponent(comp: any) {
-      const s = this as any;
+    mountReactComponent<T>(comp: T) {
       const children =
-        s.$slots.default !== undefined ? { children: s.$slots.default } : {};
+        this.$slots.default !== undefined
+          ? { children: this.$slots.default }
+          : {};
 
       // if (!comp.functional) {
       const Component = makeReactContainer(comp) as unknown as any;
       const NewComp = (props: any) => (
-        <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
+        <Component
+          {...props}
+          ref={(ref: any) => (this.reactComponentRef = ref)}
+        />
       );
 
-      const root = createRoot(s.$refs.react);
-      root.render(
+      this.root = createRoot(this.$refs.react as any);
+      this.root.render(
         <NewComp
-          {...s.$props.passedProps}
-          {...s.$attrs}
-          {...s.$listeners}
+          {...this.$props.passedProps}
+          {...this.$attrs}
+          {...this.$listeners}
           {...children}
         />
       );
-      RootMap.set((this as any).uuid, root);
+      RootMap.set(this.uuid, this.root);
     },
   },
   mounted() {
-    (this as any).mountReactComponent((this as any).$props.component);
+    this.mountReactComponent(this.$props.component);
   },
   beforeDestroy() {
-    // ReactDOM.unmountComponentAtNode((this as any).$refs.react);
-    const root = RootMap.get((this as any).uuid);
+    const root = RootMap.get(this.uuid);
     if (root) root.unmount();
   },
   updated() {
@@ -109,80 +132,146 @@ export const ReactWrapper = {
      * AFAIK, this is the only way to update children. It doesn't seem to be possible to watch
      * `$slots` or `$children`.
      */
-    if ((this as any).$slots.default !== undefined) {
-      (this as any).reactComponentRef.setState({
-        children: (this as any).$slots.default,
+    if (this.$slots.default !== undefined) {
+      this.reactComponentRef.setState({
+        children: this.$slots.default,
       });
     } else {
-      if ((this as any).reactComponentRef) {
-        if ((this as any).reactComponentRef.props) {
-          (this as any).reactComponentRef.props.children = null;
+      if (this.reactComponentRef) {
+        if (this.reactComponentRef.shouldComponentUpdate) {
+          this.reactComponentRef.shouldComponentUpdate(
+            { children: null },
+            this.reactComponentRef.state,
+            this.reactComponentRef.context
+          );
         }
-        if ((this as any).reactComponentRef.setState) {
-          (this as any).reactComponentRef.setState({
+        if (this.reactComponentRef.setState) {
+          this.reactComponentRef.setState({
             children: null,
           });
         }
       }
-
-      (this as any).reactComponentRef.setState({ children: null });
     }
   },
   reactRef(): any {
     // TODO: any reference to the inner React component will break the type (user could force it himself)
     // but there might be a way to make it generic, since we do receive the component as a function argument
-    return (this as any).reactComponentRef;
+    return this.reactComponentRef;
   },
   inheritAttrs: false,
   watch: {
+    // $attrs: {
+    //   handler() {
+    //     if (this.reactComponentRef) {
+    //       if (this.reactComponentRef.props) {
+    //         this.reactComponentRef.props = { ...this.$attrs };
+    //       }
+    //       if (this.reactComponentRef.setState) {
+    //         this.reactComponentRef.setState({
+    //           ...this.$attrs,
+    //         });
+    //       }
+    //     }
+    //   },
+    //   deep: true,
+    // },
+    // '$props.component': {
+    //   handler(newValue: any) {
+    //     this.mountReactComponent(newValue);
+    //   },
+    // },
+    // $listeners: {
+    //   handler() {
+    //     if (this.reactComponentRef) {
+    //       if (this.reactComponentRef.props) {
+    //         this.reactComponentRef.props = {
+    //           ...this.$listeners,
+    //         };
+    //       }
+    //       if (this.reactComponentRef.setState) {
+    //         this.reactComponentRef.setState({
+    //           ...this.$listeners,
+    //         });
+    //       }
+    //     }
+    //   },
+    //   deep: true,
+    // },
+    // '$props.passedProps': {
+    //   handler() {
+    //     if (this.reactComponentRef) {
+    //       if (this.reactComponentRef.props) {
+    //         this.reactComponentRef.props = {
+    //           ...this.passedProps,
+    //         };
+    //       }
+    //       if (this.reactComponentRef.setState) {
+    //         this.reactComponentRef.setState({
+    //           ...this.passedProps,
+    //         });
+    //       }
+    //     }
+    //   },
+    //   deep: true,
+    // },
+
     $attrs: {
       handler() {
-        if ((this as any).reactComponentRef) {
-          if ((this as any).reactComponentRef.props) {
-            (this as any).reactComponentRef.props = { ...(this as any).$attrs };
+        if (this.reactComponentRef) {
+          console.log('$attrs updated', this.$attrs);
+          if (this.reactComponentRef.shouldComponentUpdate) {
+            this.reactComponentRef.shouldComponentUpdate(
+              { ...this.$attrs },
+              this.reactComponentRef.state,
+              this.reactComponentRef.context
+            );
           }
-          if ((this as any).reactComponentRef.setState) {
-            (this as any).reactComponentRef.setState({
-              ...(this as any).$attrs,
+          if (this.reactComponentRef.setState) {
+            this.reactComponentRef.setState({
+              ...this.$attrs,
             });
           }
         }
       },
       deep: true,
     },
-    "$props.component": {
+    '$props.component': {
       handler(newValue: any) {
-        (this as any).mountReactComponent(newValue);
+        this.mountReactComponent(newValue);
       },
     },
     $listeners: {
       handler() {
-        if ((this as any).reactComponentRef) {
-          if ((this as any).reactComponentRef.props) {
-            (this as any).reactComponentRef.props = {
-              ...(this as any).$listeners,
-            };
+        if (this.reactComponentRef) {
+          if (this.reactComponentRef.shouldComponentUpdate) {
+            this.reactComponentRef.shouldComponentUpdate(
+              { ...this.$listeners },
+              this.reactComponentRef.state,
+              this.reactComponentRef.context
+            );
           }
-          if ((this as any).reactComponentRef.setState) {
-            (this as any).reactComponentRef.setState({
-              ...(this as any).$listeners,
+          if (this.reactComponentRef.setState) {
+            this.reactComponentRef.setState({
+              ...this.$listeners,
             });
           }
         }
       },
       deep: true,
     },
-    "$props.passedProps": {
+    '$props.passedProps': {
       handler() {
-        if ((this as any).reactComponentRef) {
-          if ((this as any).reactComponentRef.props) {
-            (this as any).reactComponentRef.props = {
-              ...(this as any).$passedProps,
-            };
+        if (this.reactComponentRef && this.passedProps) {
+          if (this.reactComponentRef.shouldComponentUpdate) {
+            this.reactComponentRef.shouldComponentUpdate(
+              { ...this.passedProps },
+              this.reactComponentRef.state,
+              this.reactComponentRef.context
+            );
           }
-          if ((this as any).reactComponentRef.setState) {
-            (this as any).reactComponentRef.setState({
-              ...(this as any).$passedProps,
+          if (this.reactComponentRef.setState) {
+            this.reactComponentRef.setState({
+              ...this.passedProps,
             });
           }
         }
@@ -190,4 +279,4 @@ export const ReactWrapper = {
       deep: true,
     },
   },
-};
+});

@@ -1,6 +1,7 @@
-import React from "react";
-import { VueWrapper as VueWrapperRaw } from "../wrappers/VueWrapper";
-import isReactComponent from "../utils/isReactComponent";
+import React from 'react';
+
+import { isReactComponent } from '../utils/isReactComponent';
+import { VueWrapper as VueWrapperRaw } from '../wrappers/VueWrapper';
 
 const VueWrapper = VueWrapperRaw as unknown as () => JSX.Element;
 
