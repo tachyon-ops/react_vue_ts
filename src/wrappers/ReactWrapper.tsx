@@ -1,13 +1,11 @@
 import React from "react";
-import { Root, createRoot } from "react-dom/client";
-import { VueWrapper } from "./VueWrapper";
+import { createRoot, Root } from "react-dom/client";
 import { v4 } from "uuid";
 
-const makeReactContainer = (Component: any) =>
+import { VueWrapper } from "./VueWrapper";
+
+const makeReactContainer = (Component: any) => {
   class ReactInVue extends React.Component {
-
-    public reactRef : React.RefObject<unknown>;
-
     static displayName = `ReactInVue${
       Component.displayName || Component.name || "Component"
     }`;
@@ -18,7 +16,6 @@ const makeReactContainer = (Component: any) =>
       /**
        * Attach internal reference, so calls to child methods are allowed.
        */
-      this.reactRef = React.createRef();
 
       /**
        * We create a stateful component in order to attach a ref on it. We will use that ref to
@@ -29,11 +26,11 @@ const makeReactContainer = (Component: any) =>
     }
 
     wrapVueChildren(children: any) {
-      // console.log("wrapVueChildren: ", children);
-      if (children)
+      if (children) {
         return {
           render: (createElement: any) => createElement("div", children),
         };
+      }
       return null;
     }
 
@@ -46,25 +43,24 @@ const makeReactContainer = (Component: any) =>
         "": _invoker,
         ...rest
       } = (this as any).state;
-      const wrappedChildren = this.wrapVueChildren(children);
 
+      const { forwardedRef } = this.props as any;
+
+      const wrappedChildren = this.wrapVueChildren(children);
       const VueWrapperRender = VueWrapper as unknown as (props: {
         component: any;
       }) => JSX.Element;
 
-      if ("ReactInVueTestAA" === ReactInVue.displayName) {
-        // console.log("THIS IS IT!", Component.render);
-      }
-
-      // console.log("wrappedChildren: ", wrappedChildren);
-
       return (
-        <Component ref={this.reactRef} {...rest}>
+        <Component ref={forwardedRef as any} {...rest}>
           {wrappedChildren && <VueWrapperRender component={wrappedChildren} />}
         </Component>
       );
     }
-  } as unknown as () => JSX.Element;
+  }
+
+  return ReactInVue;
+};
 
 const RootMap: Map<string, Root> = new Map();
 
@@ -79,15 +75,11 @@ export const ReactWrapper = {
   methods: {
     mountReactComponent(comp: any) {
       const s = this as any;
-      // console.log("before creating NewComp");
-      // console.log("Name: ", comp.name || comp.displayName);
-      // console.log(comp);
-
       const children =
         s.$slots.default !== undefined ? { children: s.$slots.default } : {};
 
       // if (!comp.functional) {
-      const Component = makeReactContainer(comp);
+      const Component = makeReactContainer(comp) as unknown as any;
       const NewComp = (props: any) => (
         <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
       );
@@ -122,10 +114,21 @@ export const ReactWrapper = {
         children: (this as any).$slots.default,
       });
     } else {
+      if ((this as any).reactComponentRef) {
+        if ((this as any).reactComponentRef.props) {
+          (this as any).reactComponentRef.props.children = null;
+        }
+        if ((this as any).reactComponentRef.setState) {
+          (this as any).reactComponentRef.setState({
+            children: null,
+          });
+        }
+      }
+
       (this as any).reactComponentRef.setState({ children: null });
     }
   },
-  reactRef() : any {
+  reactRef(): any {
     // TODO: any reference to the inner React component will break the type (user could force it himself)
     // but there might be a way to make it generic, since we do receive the component as a function argument
     return (this as any).reactComponentRef;
@@ -134,9 +137,16 @@ export const ReactWrapper = {
   watch: {
     $attrs: {
       handler() {
-        (this as any).reactComponentRef.setState({
-          ...(this as any).$attrs,
-        });
+        if ((this as any).reactComponentRef) {
+          if ((this as any).reactComponentRef.props) {
+            (this as any).reactComponentRef.props = { ...(this as any).$attrs };
+          }
+          if ((this as any).reactComponentRef.setState) {
+            (this as any).reactComponentRef.setState({
+              ...(this as any).$attrs,
+            });
+          }
+        }
       },
       deep: true,
     },
@@ -147,17 +157,35 @@ export const ReactWrapper = {
     },
     $listeners: {
       handler() {
-        (this as any).reactComponentRef.setState({
-          ...(this as any).$listeners,
-        });
+        if ((this as any).reactComponentRef) {
+          if ((this as any).reactComponentRef.props) {
+            (this as any).reactComponentRef.props = {
+              ...(this as any).$listeners,
+            };
+          }
+          if ((this as any).reactComponentRef.setState) {
+            (this as any).reactComponentRef.setState({
+              ...(this as any).$listeners,
+            });
+          }
+        }
       },
       deep: true,
     },
     "$props.passedProps": {
       handler() {
-        (this as any).reactComponentRef.setState({
-          ...(this as any).$props.passedProps,
-        });
+        if ((this as any).reactComponentRef) {
+          if ((this as any).reactComponentRef.props) {
+            (this as any).reactComponentRef.props = {
+              ...(this as any).$passedProps,
+            };
+          }
+          if ((this as any).reactComponentRef.setState) {
+            (this as any).reactComponentRef.setState({
+              ...(this as any).$passedProps,
+            });
+          }
+        }
       },
       deep: true,
     },
