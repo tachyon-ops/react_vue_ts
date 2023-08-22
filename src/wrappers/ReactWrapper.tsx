@@ -5,12 +5,7 @@ import { defineComponent } from "vue";
 
 import { VueWrapper } from "./VueWrapper";
 
-const makeReactContainer = <
-  P extends PropsWithChildren,
-  T extends { key?: number }
->(
-  Component: any
-): any => {
+const makeReactContainer = (Component: any): any => {
   class ReactInVue extends React.Component {
     static displayName = `ReactInVue${
       Component.displayName || Component.name || "Component"
