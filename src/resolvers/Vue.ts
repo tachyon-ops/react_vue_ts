@@ -1,33 +1,33 @@
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
-import { ReactWrapper } from '../wrappers/ReactWrapper';
+import { ReactWrapper } from "../wrappers/ReactWrapper";
 
-type CompType<T extends {}> = (props: T) => JSX.Element | undefined;
+type CompType<T extends object> = (props: T) => JSX.Element | undefined;
 
-type GlobalComponentConstructor<Props = {}, Slots = {}> = {
+type GlobalComponentConstructor<Props = object, Slots = object> = {
   new (): {
     $props: Props;
     $slots: Slots;
   };
 };
 
-export function ReactInVue<T extends {}>(component: CompType<T>) {
+export function ReactInVue<T extends object>(component: CompType<T>) {
   return defineComponent({
     components: { ReactWrapper },
-    props: ['passedProps'],
+    props: ["passedProps"],
     inheritAttrs: false,
     render(createElement: Vue.CreateElement) {
       return createElement(
-        'react-wrapper',
+        "react-wrapper",
         {
           props: {
             component,
-            passedProps: (this as any).$props.passedProps,
+            passedProps: (this.$props as any).passedProps,
           },
-          attrs: (this as any).$attrs,
-          on: (this as any).$listeners,
+          attrs: this.$attrs,
+          on: this.$listeners,
         },
-        (this as any).$slots.default
+        this.$slots.default
       );
     },
     methods: {

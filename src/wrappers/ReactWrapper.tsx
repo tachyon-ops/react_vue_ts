@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { createRoot, Root } from 'react-dom/client';
-import { v4 } from 'uuid';
-import { defineComponent } from 'vue';
+import React, { PropsWithChildren } from "react";
+import { createRoot, Root } from "react-dom/client";
+import { v4 } from "uuid";
+import { defineComponent } from "vue";
 
-import { VueWrapper } from './VueWrapper';
+import { VueWrapper } from "./VueWrapper";
 
 const makeReactContainer = <
   P extends PropsWithChildren,
@@ -13,7 +13,7 @@ const makeReactContainer = <
 ): any => {
   class ReactInVue extends React.Component {
     static displayName = `ReactInVue${
-      Component.displayName || Component.name || 'Component'
+      Component.displayName || Component.name || "Component"
     }`;
 
     constructor(props: any) {
@@ -34,7 +34,7 @@ const makeReactContainer = <
     wrapVueChildren(children: any) {
       if (children) {
         return {
-          render: (createElement: any) => createElement('div', children),
+          render: (createElement: any) => createElement("div", children),
         };
       }
       return null;
@@ -46,7 +46,8 @@ const makeReactContainer = <
         // Vue attaches an event handler, but it is missing an event name, so
         // it ends up using an empty string. Prevent passing an empty string
         // named prop to React.
-        '': _invoker,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        "": _invoker,
         ...rest
       } = (this as any).state;
 
@@ -70,12 +71,11 @@ const makeReactContainer = <
 
 const RootMap: Map<string, Root> = new Map();
 
-interface ReactState {}
-interface ReactProps extends PropsWithChildren {}
+type ReactProps = PropsWithChildren;
 
 export const ReactWrapper = defineComponent({
-  name: 'ReactInVueRawVueComp',
-  props: ['component', 'passedProps'],
+  name: "ReactInVueRawVueComp",
+  props: ["component", "passedProps"],
   data() {
     return {
       renderComponent: true,
@@ -84,13 +84,13 @@ export const ReactWrapper = defineComponent({
       createElement: any;
       uuid: string;
       renderComponent: boolean;
-      reactComponentRef: React.Component<ReactProps, ReactState>;
+      reactComponentRef: React.Component<ReactProps, object>;
       root: Root;
     };
   },
   render(createElement: any) {
     this.createElement = createElement;
-    return createElement('div', { ref: 'react' });
+    return createElement("div", { ref: "react" });
   },
   methods: {
     mountReactComponent<T>(comp: T) {
@@ -218,7 +218,7 @@ export const ReactWrapper = defineComponent({
     $attrs: {
       handler() {
         if (this.reactComponentRef) {
-          console.log('$attrs updated', this.$attrs);
+          // console.log('$attrs updated', this.$attrs);
           if (this.reactComponentRef.shouldComponentUpdate) {
             this.reactComponentRef.shouldComponentUpdate(
               { ...this.$attrs },
@@ -235,7 +235,7 @@ export const ReactWrapper = defineComponent({
       },
       deep: true,
     },
-    '$props.component': {
+    "$props.component": {
       handler(newValue: any) {
         this.mountReactComponent(newValue);
       },
@@ -259,7 +259,7 @@ export const ReactWrapper = defineComponent({
       },
       deep: true,
     },
-    '$props.passedProps': {
+    "$props.passedProps": {
       handler() {
         if (this.reactComponentRef && this.passedProps) {
           if (this.reactComponentRef.shouldComponentUpdate) {

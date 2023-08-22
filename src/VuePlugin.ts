@@ -1,14 +1,14 @@
-import _Vue from 'vue';
+import _Vue from "vue";
 
-import { ReactInVue } from './resolvers/Vue';
-import { isReactComponent } from './utils/isReactComponent';
+import { ReactInVue } from "./resolvers/Vue";
+import { isReactComponent } from "./utils/isReactComponent";
 
 /**
  * This mixin automatically wraps all React components into Vue.
  */
 export const VuePlugin = {
-  install(Vue: typeof _Vue, options: any) {
-    console.log('Installing Vuera VuePlugin');
+  install(Vue: typeof _Vue) {
+    console.log("Installing Vuera VuePlugin");
     /**
      * We define a custom merging strategy for the `components` field. This strategy really just
      * wraps all the React components while leaving Vue components as is.

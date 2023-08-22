@@ -27,13 +27,12 @@ export class VueWrapper extends React.Component {
      * constructor to avoid instantiating functions in render.
      */
     const createVueInstance = this.createVueInstance;
-    const self = this;
     (this as any).createVueInstance = function (
       element: any,
       component: any,
       prevComponent: any
     ) {
-      createVueInstance(element, self, component, prevComponent);
+      createVueInstance(element, this, component, prevComponent);
     };
   }
 
@@ -66,7 +65,9 @@ export class VueWrapper extends React.Component {
   createVueInstance(
     targetElement: any,
     reactThisBinding: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _component?: any,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _prevComponent?: any
   ) {
     const { component, on, ...props } = reactThisBinding.props;
