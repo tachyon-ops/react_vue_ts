@@ -1,69 +1,65 @@
-import React from "react";
+import React, {
+  ForwardedRef,
+  PropsWithChildren,
+  ReactNode,
+  createRef,
+  forwardRef,
+} from "react";
 import { Root, createRoot } from "react-dom/client";
 import { VueWrapper } from "./VueWrapper";
 import { v4 } from "uuid";
+import { CreateElement, VNodeChildren } from "vue";
 
-const makeReactContainer = (Component: any) =>
-  class ReactInVue extends React.Component {
-    public reactRef: React.RefObject<unknown>;
+type ReactInVueProps<T extends object> = PropsWithChildren & {
+  "": unknown;
+} & T;
 
-    static displayName = `ReactInVue${
-      Component.displayName || Component.name || "Component"
-    }`;
+const makeReactContainer = <E extends Element>(
+  Component: (<T>(props: T) => JSX.Element) & { displayName?: string },
+  ref: ForwardedRef<E>
+) => {
+  const ReactInVue = <T extends object>(props: ReactInVueProps<T>) => {
+    const WrapVueChildren = (children: ReactNode | undefined | undefined) => {
+      const vueChild = {
+        render: (createElement: CreateElement) =>
+          createElement("div", children as VNodeChildren),
+      };
+      return children ? vueChild : null;
+    };
 
-    constructor(props: any) {
-      super(props);
+    const {
+      children,
+      // Vue attaches an event handler, but it is missing an event name, so
+      // it ends up using an empty string. Prevent passing an empty string
+      // named prop to React.
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      "": _invoker,
+      ...rest
+    } = props;
+    const wrappedChildren = WrapVueChildren(children);
 
-      /**
-       * Attach internal reference, so calls to child methods are allowed.
-       */
-      this.reactRef = React.createRef();
+    const VueWrapperRender = VueWrapper as unknown as (props: {
+      component: unknown;
+    }) => JSX.Element;
 
-      /**
-       * We create a stateful component in order to attach a ref on it. We will use that ref to
-       * update component's state, which seems better than re-rendering the whole thing with
-       * ReactDOM.
-       */
-      (this as any).state = { ...props };
+    if ("ReactInVueTestAA" === ReactInVue.displayName) {
+      // console.log("THIS IS IT!", Component.render);
     }
 
-    wrapVueChildren(children: any) {
-      // console.log("wrapVueChildren: ", children);
-      if (children)
-        return {
-          render: (createElement: any) => createElement("div", children),
-        };
-      return null;
-    }
+    // console.log("wrappedChildren: ", wrappedChildren);
 
-    render() {
-      const {
-        children,
-        // Vue attaches an event handler, but it is missing an event name, so
-        // it ends up using an empty string. Prevent passing an empty string
-        // named prop to React.
-        "": _invoker,
-        ...rest
-      } = (this as any).state;
-      const wrappedChildren = this.wrapVueChildren(children);
+    return (
+      <Component ref={ref} {...rest}>
+        {WrapVueChildren && <VueWrapperRender component={wrappedChildren} />}
+      </Component>
+    );
+  };
+  ReactInVue.displayName = `ReactInVue${
+    Component.displayName || Component.name || "Component"
+  }`;
 
-      const VueWrapperRender = VueWrapper as unknown as (props: {
-        component: any;
-      }) => JSX.Element;
-
-      if ("ReactInVueTestAA" === ReactInVue.displayName) {
-        // console.log("THIS IS IT!", Component.render);
-      }
-
-      // console.log("wrappedChildren: ", wrappedChildren);
-
-      return (
-        <Component ref={this.reactRef} {...rest}>
-          {wrappedChildren && <VueWrapperRender component={wrappedChildren} />}
-        </Component>
-      );
-    }
-  } as unknown as () => JSX.Element;
+  return ReactInVue;
+};
 
 const RootMap: Map<string, Root> = new Map();
 
@@ -86,10 +82,8 @@ export const ReactWrapper = {
         s.$slots.default !== undefined ? { children: s.$slots.default } : {};
 
       // if (!comp.functional) {
-      const Component = makeReactContainer(comp);
-      const NewComp = (props: any) => (
-        <Component {...props} ref={(ref: any) => (s.reactComponentRef = ref)} />
-      );
+      const Component = makeReactContainer(comp, s.reactComponentRef);
+      const NewComp = (props: any) => <Component {...props} />;
 
       const root = createRoot(s.$refs.react);
       root.render(

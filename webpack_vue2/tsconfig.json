@@ -14,9 +14,15 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "react_ui/*": ["./react_ui/*"]
+      "react_ui/*": [
+        "./react_ui/*"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
