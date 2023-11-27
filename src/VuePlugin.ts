@@ -7,7 +7,7 @@ import VueResolver from "./resolvers/Vue";
  * This mixin automatically wraps all React components into Vue.
  */
 export const VuePlugin = {
-  install(Vue: typeof _Vue, options: any) {
+  install(Vue: typeof _Vue) {
     console.log("Installing Vuera VuePlugin");
     /**
      * We define a custom merging strategy for the `components` field. This strategy really just
@@ -22,15 +22,14 @@ export const VuePlugin = {
     ) {
       const mergedValue = originalComponentsMergeStrategy(parent, ...args);
 
-      const wrappedComponents = mergedValue
-        ? Object.entries(mergedValue).reduce(
-            (acc, [k, v]) => ({
-              ...acc,
-              [k]: isReactComponent(v) ? VueResolver(v as any) : v,
-            }),
-            {}
-          )
-        : mergedValue;
+      const reducer = Object.entries(mergedValue).reduce(
+        (acc, [k, v]) => ({
+          ...acc,
+          [k]: isReactComponent(v) ? VueResolver(v as any) : v,
+        }),
+        {}
+      );
+      const wrappedComponents = mergedValue ? reducer : mergedValue;
       return Object.assign(mergedValue, wrappedComponents) as {
         [k: string]: Vue.Component;
       };
