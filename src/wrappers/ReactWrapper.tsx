@@ -5,8 +5,7 @@ import { v4 } from "uuid";
 
 const makeReactContainer = (Component: any) =>
   class ReactInVue extends React.Component {
-
-    public reactRef : React.RefObject<unknown>;
+    public reactRef: React.RefObject<unknown>;
 
     static displayName = `ReactInVue${
       Component.displayName || Component.name || "Component"
@@ -125,7 +124,7 @@ export const ReactWrapper = {
       (this as any).reactComponentRef.setState({ children: null });
     }
   },
-  reactRef() : any {
+  reactRef(): any {
     // TODO: any reference to the inner React component will break the type (user could force it himself)
     // but there might be a way to make it generic, since we do receive the component as a function argument
     return (this as any).reactComponentRef;

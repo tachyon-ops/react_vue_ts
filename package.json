@@ -1,63 +1,64 @@
 {
-    "name": "vuera-ts",
-    "version": "1.0.7",
-    "description": "Vuera lib migrated to TS",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "/dist"
-    ],
-    "scripts": {
-        "build": "tsc"
-    },
-    "release": {
-        "branches": [
-            "main"
-        ]
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/tachyon-ops/react_vue_ts.git"
-    },
-    "keywords": [
-        "npm",
-        "javascript",
-        "typescript",
-        "esm",
-        "cjs",
-        "nodejs",
-        "commonjs",
-        "ecmascript",
-        "react",
-        "vue",
-        "react in vue",
-        "vue in react"
-    ],
-    "author": "nmpribeiro",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/tachyon-ops/react_vue_ts/issues"
-    },
-    "homepage": "https://github.com/tachyon-ops/react_vue_ts#readme",
-    "peerDependencies": {
-        "react": ">=18",
-        "react-dom": ">=18",
-        "vue": ">= 2.6"
-    },
-    "devDependencies": {
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
-        "@types/uuid": "^9.0.1",
-        "@typescript-eslint/eslint-plugin": "^5.56.0",
-        "@typescript-eslint/parser": "^5.56.0",
-        "eslint": "^8.36.0",
-        "typescript": "^5.0.2",
-        "uuid": "^9.0.0",
-        "vue": "2.5",
-        "webpack": "^5.76.3"
-    },
-    "dependencies": {}
+  "name": "vuera-ts",
+  "version": "1.0.7",
+  "description": "Vuera lib migrated to TS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prettier": "prettier --write ."
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tachyon-ops/react_vue_ts.git"
+  },
+  "keywords": [
+    "npm",
+    "javascript",
+    "typescript",
+    "esm",
+    "cjs",
+    "nodejs",
+    "commonjs",
+    "ecmascript",
+    "react",
+    "vue",
+    "react in vue",
+    "vue in react"
+  ],
+  "author": "nmpribeiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tachyon-ops/react_vue_ts/issues"
+  },
+  "homepage": "https://github.com/tachyon-ops/react_vue_ts#readme",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "vue": ">= 2.6"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "typescript": "^5.0.2",
+    "uuid": "^9.0.0",
+    "vue": "2.5",
+    "webpack": "^5.76.3"
+  },
+  "dependencies": {}
 }

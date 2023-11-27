@@ -11,7 +11,7 @@ In a nutshell:
 
 ### Install
 
- `yarn add vuera-ts`
+`yarn add vuera-ts`
 
 ### Usage
 
@@ -26,7 +26,7 @@ Then you can use `TestCompInVue` in your Vue component. Register it in `Vue.comp
 
 ```jsx
 <TestCompInVue foo="bar from Vue">
-    This is a children from Vue - it updates on Hot Reload! :D
+  This is a children from Vue - it updates on Hot Reload! :D
 </TestCompInVue>
 ```
 
@@ -34,29 +34,29 @@ Then you can use `TestCompInVue` in your Vue component. Register it in `Vue.comp
 
 ### Clone the project
 
- `git clone git@github.com:tachyon-ops/react_vue_ts.git`
+`git clone git@github.com:tachyon-ops/react_vue_ts.git`
 
 ### Install lib
 
- `yarn`
+`yarn`
 
 ### Build
 
- `yarn build`
+`yarn build`
 
 ### Publish
 
- `yarn publish`
+`yarn publish`
 
 ## TODO
 
-* [ ] Setup `webpack_vue3` example
-* [ ] Setup `webpack_react` example
-* [ ] Check if Vue in react works (I am not very motivated to do it)
+- [ ] Setup `webpack_vue3` example
+- [ ] Setup `webpack_react` example
+- [ ] Check if Vue in react works (I am not very motivated to do it)
 
 ## Contributors
 
 I really enjoy people recognizing others. Therefore, whoever contributes to our project will have a mention here :)
 I am very grateful!
 
-* [Juan Lago @juanparati](https://github.com/juanparati)
+- [Juan Lago @juanparati](https://github.com/juanparati)

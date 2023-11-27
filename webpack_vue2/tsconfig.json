@@ -1,28 +1,22 @@
 {
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "strict": true,
-        "plugins": [
-            {
-                "name": "typescript-plugin-css-modules"
-            }
-        ],
-        "baseUrl": "./src",
-        "paths": {
-            "react_ui/*": [
-                "./react_ui/*"
-            ]
-        }
-    },
-    "include": [
-        "src/**/*"
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
     ],
-    "exclude": [
-        "node_modules"
-    ]
+    "baseUrl": "./src",
+    "paths": {
+      "react_ui/*": ["./react_ui/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

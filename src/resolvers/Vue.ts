@@ -22,8 +22,8 @@ export default function VueResolver<T>(component: (props: T) => any) {
     },
     methods: {
       reactRef() {
-          return this.$children[0].reactComponentRef.reactRef.current;
-      }
+        return this.$children[0].reactComponentRef.reactRef.current;
+      },
     },
   } as unknown as
     | Component<any, any, any, T>

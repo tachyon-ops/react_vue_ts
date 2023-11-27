@@ -1,25 +1,15 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "target": "ESNext",
-        "lib": [
-            "es2017",
-            "DOM",
-            "DOM.Iterable",
-            "ESNext"
-        ],
-        "declaration": true,
-        "esModuleInterop": true,
-        "outDir": "./dist",
-        "jsx": "react-jsx",
-        "types": []
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "example_vue2"
-    ]
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "lib": ["es2017", "DOM", "DOM.Iterable", "ESNext"],
+    "declaration": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "types": []
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "example_vue2"]
 }
