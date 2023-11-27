@@ -34,7 +34,7 @@ Then you can use `TestCompInVue` in your Vue component. Register it in `Vue.comp
 
 ### Clone the project
 
- `git clone git@github.com:nmpribeiro/vuera-ts.git`
+ `git clone git@github.com:tachyon-ops/react_vue_ts.git`
 
 ### Install lib
 
